@@ -1,23 +1,24 @@
 const express = require('express');
-const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const usersRouter = require('./routes/users');
+const path = require('path');
 const app = express();
+const db = require('./database');
 
-router = express.Router();
+require('dotenv').config();
+
+db.connect((err) => {
+  if (err) {
+    console.error("error connecting: " + err);
+    return;
+  }
+  console.log("Connection Successful !!");
+});
+
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
-
-let db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Pwd@1234',
-  database: 'Users'
-});
-
-db.connect();
 
 app.use('/users', usersRouter);
 
